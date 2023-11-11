@@ -34,7 +34,7 @@ public class AdminController {
         }
 
         model.addAttribute("course", new Course());
-        return "add_course";
+        return "add_course.html";
     }
 
     @PostMapping("add-course-video")
@@ -129,7 +129,7 @@ public class AdminController {
         }
 
         model.addAttribute("command", new User());
-        return "add_command";
+        return "add_command.html";
     }
 
     @PostMapping("add-command")
@@ -142,4 +142,24 @@ public class AdminController {
 
         return "redirect:/command";
     }
+
+//    @GetMapping("delete-command")
+//    public String deleteCommand(Model model, Authentication authentication) {
+//        if (!authentication.isAuthenticated()) {
+//            return "redirect:/login";
+//        }
+//
+//        model.addAttribute("command", new User());
+//        return "delete_command.html";
+//    }
+//    @DeleteMapping("delete-command")
+//    public String deleteCommandSubmit(@ModelAttribute User user, Authentication authentication) throws IOException {
+//        if (!authentication.isAuthenticated()) {
+//            return "redirect:/login";
+//        }
+//
+//        userService.add(user);
+//
+//        return "redirect:/command";
+//    }
 }

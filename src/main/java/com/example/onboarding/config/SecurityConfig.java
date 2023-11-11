@@ -6,6 +6,7 @@ import com.example.onboarding.service.DBUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -53,10 +54,33 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .httpBasic().and()
-
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/user").authenticated()
+                        .requestMatchers("api/user/login").permitAll()
+                        .requestMatchers("api/user").hasAuthority("ADMIN")
+                        .requestMatchers("api/user/all").hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "api/course").authenticated()
+                        .requestMatchers(HttpMethod.GET, "api/course/v1").authenticated()
+                        .requestMatchers(HttpMethod.POST, "api/course/salary").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "api/product").authenticated()
+                        .requestMatchers(HttpMethod.GET, "api/product/v1").authenticated()
+                        .requestMatchers(HttpMethod.POST, "api/product/buy").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "api/command").authenticated()
+                        .requestMatchers(HttpMethod.POST, "api/command").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "api/command").hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "api/book").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/book").authenticated()
+                        .requestMatchers("api/book/all").permitAll()
+                        .requestMatchers("api/book/all/moderate").hasAuthority("ADMIN")
+                        .requestMatchers("api/book/approve").hasAuthority("ADMIN")
+
+                        .requestMatchers("**").authenticated()
                 )
+
                 .csrf().disable()
                 .authenticationManager(authenticationManager(httpSecurity))
                 .build();

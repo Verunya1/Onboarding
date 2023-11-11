@@ -8,19 +8,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("api/user")
 public class UserController {
 
-    private final CourseService courseService;
     private final UserService userService;
-//    @GetMapping("index")
-//    public String index() {
-//        return "index";
-//    }
+
     @GetMapping
-    public User get(@RequestParam Long id) { // подумать над integer/long
+    public User get(@RequestParam Long id) {
         return userService.get(id);
     }
     @PostMapping("login")
@@ -32,7 +30,8 @@ public class UserController {
     public User add(@RequestBody User user) {
         return userService.add(user);
     }
-
-
-
+    @GetMapping("all")
+    public List<User> getAll() {
+        return userService.getAll();
+    }
 }

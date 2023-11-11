@@ -49,11 +49,11 @@ public class OnboardingController {
     public String products(Model model) {
         List<Product> products = productService.getAll();
         List<ProductImage> images = new ArrayList<>();
-        List<ProductImage> productImages = new ArrayList<>();
 
         products.forEach(product ->
-            productImages.add(productService.getImages(product.getId()).get(0)) );
+            images.add(productService.getImages(product.getId()).get(0)) );
         model.addAttribute("product", products);
+        model.addAttribute("product", images);
         return "product";
     }
     @GetMapping("/course")

@@ -18,34 +18,22 @@ public class CourseController {
     private final CourseService courseService;
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping()
+    public List<Course> getAll() {
+        return courseService.getAll();
+    }
+
+    @GetMapping("/v1")
     public Course get(@RequestParam Long id) {
         return courseService.getCourseByID(id);
     }
 
-    @GetMapping("all")
-    public List<Course> getAll() {
-        return courseService.getAll();
-    }
+
     @GetMapping("/salary")
     public String salaryCourse(@RequestParam("id") Long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         userService.salaryCourseById(user, id);
-        return "redirect:/index"; // понять куда редиректить
+        return "redirect:/course"; // понять куда редиректить
     }
 
-//    @PostMapping
-//    public Course create(@RequestBody Course course) {
-//        return courseService.sa(book);
-//    }
-
-//    @GetMapping("all/moderate")
-//    public List<Course> getAllModerate() {
-//        return bookService.getAllNotApproved();
-//    }
-//
-//    @PatchMapping("approve")
-//    public Book approve(@RequestParam Integer id) {
-//        return bookService.approve(id);
-//    }
 }

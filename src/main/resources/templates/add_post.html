@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main>
+    <div th:insert="~{/header.html}"></div>
+    <section class="flatPurchase container">
+        <h3>Добавить объявление</h3>
+        <form enctype="multipart/form-data" th:action="@{/advertisement}" th:method="POST" th:object="${advertisement}">
+            Описание квартиры :<input required th:field="*{description}" type="text"/><br><br>
+            Цена:<input required th:field="*{price}" type="number"/><br><br>
+            Первая фотография:<input name="file1"  required type="file" accept="image/png, image/jpeg"/><br><br>
+            Вторая фотография:<input name="file2" required type="file" accept="image/png, image/jpeg"/><br><br>
+            Третья фотография:<input name="file3" required type="file" accept="image/png, image/jpeg"/><br><br>
+            Тип объявления:
+            <select required th:field="*{type}">
+                <option value="Продать">Продать</option>
+                <option value="Сдать">Сдать</option>
+            </select>
+            <input type="submit" value="Добавить объявление"/>
+        </form>
+    </section>
+</main>
+</body>
+</html>

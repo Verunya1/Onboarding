@@ -32,27 +32,5 @@ public class CommandController {
     }
 
 
-//    @GetMapping("/advertisement")
-//    public String advertisementInfo(@RequestParam("id") Long id, Model model, Authentication authentication) {
-//        Realty realty = realtyService.getRealtyByID(id);
-//        User owner = userService.get(realty.getUserId());
-//        if (authentication != null) {
-//            User user = (User) authentication.getPrincipal();
-//            model.addAttribute("user", user);
-//        }
-//        List<RealtyImage> realtyImages = realtyService.getAllImages(id);
-//        model.addAttribute("advertisement", realty);
-//        model.addAttribute("images", realtyImages);
-//        model.addAttribute("owner", owner);
-//        return "advertisement_info";
-//    }
-//    @GetMapping("all/moderate")
-//    public List<Book> getAllModerate() {
-//        return bookService.getAllNotApproved();
-//    }
-//
-//    @PatchMapping("approve")
-//    public Book approve(@RequestParam Integer id) {
-//        return bookService.approve(id);
-//    }
+
 }

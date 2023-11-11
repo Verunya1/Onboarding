@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,20 +20,20 @@ public class ProductController {
     private final ProductService productService;
     private final UserService userService;
 
+    @GetMapping()
+    public List<Product> getAll() {
+        return productService.getAll();
+    }
 
-    @GetMapping
+    @GetMapping("/v1")
     public Product get(@RequestParam Long id) {
         return productService.getProductByID(id);
     }
 
-    @GetMapping("all")
-    public List<Product> getAll() {
-        return productService.getAll();
-    }
     @GetMapping("/buy")
     public String buyProduct(@RequestParam("id") Long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         userService.buyProductById(user, id);
-        return "redirect:/index"; // понять куда редиректить
+        return "redirect:/product";
     }
 }
