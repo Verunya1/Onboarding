@@ -3,14 +3,16 @@ package com.example.onboarding.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "market")
-public class Market {
+@Table(name = "product")
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +20,7 @@ public class Market {
     private Long price;
     private String name;
     private String description;
+    @ManyToMany
+    private List<User> userId;
 
 }

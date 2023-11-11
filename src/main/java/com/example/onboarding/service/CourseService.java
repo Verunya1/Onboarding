@@ -24,9 +24,11 @@ public class CourseService {
     public List<Course> getAll() {
         return courseRepository.findAll();
     }
+
     public List<CourseVideo> getAllVideos(Long id) {
         return courseVideoRepository.getAllByCourseId(id);
     }
+
     public Course saveVideoCourse(Course course, MultipartFile file) throws IOException {
         course = courseRepository.save(course);
         courseVideoRepository.save(new CourseVideo(0L, course.getId(), fileService.saveVideo("vid" + course.getId() + "_1", file)));
@@ -38,6 +40,7 @@ public class CourseService {
         coursePresentationRepository.save(new CoursePresentation(0L, course.getId(), fileService.savePresentation("pptx" + course.getId() + "_1", file)));
         return course;
     }
+
     public void deleteCourse(Long id) {
         courseVideoRepository.deleteAll(courseVideoRepository.getAllByCourseId(id));
         courseRepository.deleteById(id);
@@ -45,5 +48,9 @@ public class CourseService {
 
     public Course getCourseByID(Long id) {
         return courseRepository.findById(id).orElseThrow();
+    }
+
+    public void setAccess(Long id) {
+        courseRepository.setAccess(id).setAccess("Недоступен");
     }
 }

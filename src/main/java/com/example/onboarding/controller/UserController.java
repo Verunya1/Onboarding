@@ -1,33 +1,34 @@
-//package com.example.onboarding.controller;
-//
-//import app.realtyagency.entity.Realty;
-//import app.realtyagency.entity.RealtyImage;
-//import app.realtyagency.entity.User;
-//import app.realtyagency.service.RealtiesService;
-//import app.realtyagency.service.UserService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.ModelAttribute;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.multipart.MultipartFile;
-//
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//@Controller
-//@RequiredArgsConstructor
-//
-//public class OnboardingController {
-//
-//    private final RealtiesService realtyService;
-//    private final UserService userService;
-//
+package com.example.onboarding.controller;
+
+import com.example.onboarding.entity.User;
+import com.example.onboarding.service.CourseService;
+import com.example.onboarding.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("api/user")
+public class UserController {
+
+    private final CourseService courseService;
+    private final UserService userService;
+
+    @GetMapping
+    public User get(@RequestParam Long id) { // подумать над integer/long
+        return userService.get(id);
+    }
+    @PostMapping("login")
+    public User login(Authentication authentication) {
+        return (User) authentication.getPrincipal();
+    }
+
+    @PostMapping
+    public User add(@RequestBody User user) {
+        return userService.add(user);
+    }
 //    @GetMapping("/index")
 //    public String getAdvertisement(Model model, Authentication authentication) {
 //        if (authentication != null) {
@@ -93,6 +94,6 @@
 //        userService.buyRealtyById(user, id);
 //        return "redirect:/index";
 //    }
-//
-//
-//}
+
+
+}

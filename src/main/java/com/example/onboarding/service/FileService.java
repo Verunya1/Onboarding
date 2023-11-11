@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 @Service
 public class FileService {
-    public String saveImage(String name, MultipartFile file) throws IOException {
+    public String saveImagePost(String name, MultipartFile file) throws IOException {
         String originalFileName = file.getOriginalFilename();
 
         if (originalFileName == null) {
@@ -19,20 +19,20 @@ public class FileService {
         }
 
         String filename = name + originalFileName.substring(originalFileName.lastIndexOf("."));
-        String imageDir = "src/main/resources/static/images";
+        String imageDir = "src/main/resources/static/images/post";
         String projectPath = new File("").getAbsolutePath();
 
         Path path = Paths.get(projectPath, imageDir, filename);
         File newFile = path.toFile();
         FileUtils.writeByteArrayToFile(newFile, file.getBytes());
 
-        String imageDir2 = "target/classes/static/images";
+        String imageDir2 = "target/classes/static/images/post";
 
         Path path2 = Paths.get(projectPath, imageDir2, filename);
         File newFile2 = path2.toFile();
         FileUtils.writeByteArrayToFile(newFile2, file.getBytes());
 
-        return "images/" + filename;
+        return "post/" + filename;
     }
 
     public String saveVideo(String name, MultipartFile file) throws IOException {
@@ -80,5 +80,29 @@ public class FileService {
         FileUtils.writeByteArrayToFile(newFile2, file.getBytes());
 
         return "presentation/" + filename;
+    }
+
+    public String saveImageProduct(String name, MultipartFile file) throws IOException {
+        String originalFileName = file.getOriginalFilename();
+
+        if (originalFileName == null) {
+            originalFileName = "file.jpg";
+        }
+
+        String filename = name + originalFileName.substring(originalFileName.lastIndexOf("."));
+        String imageDir = "src/main/resources/static/images/product";
+        String projectPath = new File("").getAbsolutePath();
+
+        Path path = Paths.get(projectPath, imageDir, filename);
+        File newFile = path.toFile();
+        FileUtils.writeByteArrayToFile(newFile, file.getBytes());
+
+        String imageDir2 = "target/classes/static/images/product";
+
+        Path path2 = Paths.get(projectPath, imageDir2, filename);
+        File newFile2 = path2.toFile();
+        FileUtils.writeByteArrayToFile(newFile2, file.getBytes());
+
+        return "product/" + filename;
     }
 }

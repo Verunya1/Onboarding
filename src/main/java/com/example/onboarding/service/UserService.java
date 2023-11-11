@@ -1,5 +1,7 @@
 package com.example.onboarding.service;
 
+import com.example.onboarding.entity.Course;
+import com.example.onboarding.entity.Product;
 import com.example.onboarding.entity.User;
 import com.example.onboarding.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +27,7 @@ public class UserService {
     private final CourseService courseService;
     private final PostService postService;
     private final CommandService commandService;
+    private final ProductService productService;
 
     public User get(Long id) {
         return userRepository.findById(id).orElseThrow();
@@ -37,39 +40,17 @@ public class UserService {
     public User add(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
-        user.setMoney(0L);
+        user.setMoneyGame(0L);
         return userRepository.save(user);
     }
-// public User add(User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        user.setRole("USER");
-//        return userRepository.save(user);
-//    }
-//
-//    public User addModer(User user) {
-//        System.out.println(user.getPassword());
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        System.out.println(user.getPassword());
-//        user.setRole("MODER");
-//        return userRepository.save(user);
-//    }
-//
-//    public Boolean authorise(User user, HttpServletRequest req) {
-//        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-//
-//        Authentication auth = authenticationManager.authenticate(authReq);
-//
-//        if(!auth.isAuthenticated()) {
-//            return false;
-//        }
-//
-//        SecurityContext sc = SecurityContextHolder.getContext();
-//        sc.setAuthentication(auth);
-//        HttpSession session = req.getSession(true);
-//        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
-//
-//        return true;
-//    }
+
+    public User addAdmin(User user) {
+        System.out.println(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
+        user.setRole("ADMIN");
+        return userRepository.save(user);
+    }
     public Boolean authorise(User user, HttpServletRequest req) {
         UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 
@@ -87,17 +68,24 @@ public class UserService {
         return true;
     }
 
-    public void buyRealtyById(User user, Long realtyId) {
-        Realty realty = realtiesService.getRealtyByID(realtyId);
-        if (user.getMoney() < realty.getPrice()) {
+    public void buyProductById(User user, Long productId) {
+        Product product = productService.getProductByID(productId);
+        if (user.getMoneyGame() < product.getPrice()) {
             return;
         }
-        user.setMoney(user.getMoney() - realty.getPrice());
+        user.setMoneyGame(user.getMoneyGame() - product.getPrice());
 
-        User owner = get(realty.getUserId());
-
-        owner.setMoney(owner.getMoney() + realty.getPrice());
-
-        realtiesService.deleteRealty(realtyId);
+        productService.deleteProduct(productId);
     }
+    public void salaryCourseById(User user, Long courseId) {
+        Course course = courseService.getCourseByID(courseId);
+        if (course.getStatus().equals("Пройден") && course.getAccess().equals("Доступен")) {
+            return;
+        }
+        user.setMoneyGame(user.getMoneyGame() + course.getPrice());
+
+//        courseService.deleteCourse(courseId);
+        courseService.setAccess(courseId);
+    }
+
 }

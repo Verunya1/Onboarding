@@ -27,12 +27,12 @@ public class PostService {
     }
 
     public List<Post> getAllPosts(Long id) {
-        return postRepository.getAllByPostId(id);
+        return postRepository.getAllByPostId(id); // хуйня не иначе
     }
 
     public Post savePost(Post post, MultipartFile file) throws IOException {
         post = postRepository.save(post);
-        postImageRepository.save(new PostImage(0L, post.getId(), fileService.saveImage("img" + post.getId() + "_1", file)));
+        postImageRepository.save(new PostImage(0L, post.getId(), fileService.saveImagePost("img_post" + post.getId() + "_1", file)));
         return post;
     }
 
