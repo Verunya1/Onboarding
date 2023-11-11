@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CoursePresentationRepository extends JpaRepository<CoursePresentation, Long> {
-    List<CoursePresentation> getAllByCourseId(Long courseId);
+    List<CoursePresentation> getAllPresentationByCourseId(Long courseId);
 }

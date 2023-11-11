@@ -29,10 +29,9 @@ public class ProductService {
         productImageRepository.save(new ProductImage(0L, product.getId(), fileService.saveImageProduct("img_product" + product.getId() + "_1", file)));
         return product;
     }
-//    public void updateProduct(Long id) {
-//        productImageRepository.deleteAll(productImageRepository.getAllByProductId(id));
-//        productRepository.deleteById(id);
-//    }
+    public List<ProductImage> getImages(Long id) {
+        return productImageRepository.getAllByProductId(id);
+    }
     public void deleteProduct(Long id) {
         productImageRepository.deleteAll(productImageRepository.getAllByProductId(id));
         productRepository.deleteById(id);

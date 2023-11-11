@@ -1,9 +1,6 @@
 package com.example.onboarding.service;
 
-import com.example.onboarding.entity.Course;
-import com.example.onboarding.entity.CourseVideo;
-import com.example.onboarding.entity.Post;
-import com.example.onboarding.entity.PostImage;
+import com.example.onboarding.entity.*;
 import com.example.onboarding.repository.CourseRepository;
 import com.example.onboarding.repository.CourseVideoRepository;
 import com.example.onboarding.repository.PostImageRepository;
@@ -27,9 +24,13 @@ public class PostService {
     }
 
     public List<Post> getAllPosts(Long id) {
-        return postRepository.getAllByPostId(id); // хуйня не иначе
+        return postRepository.getAllByPostId(id);
     }
 
+
+    public List<PostImage> getImages(Long id) {
+        return postImageRepository.getAllByPostId(id);
+    }
     public Post savePost(Post post, MultipartFile file) throws IOException {
         post = postRepository.save(post);
         postImageRepository.save(new PostImage(0L, post.getId(), fileService.saveImagePost("img_post" + post.getId() + "_1", file)));

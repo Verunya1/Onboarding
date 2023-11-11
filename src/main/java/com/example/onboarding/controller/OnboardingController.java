@@ -1,6 +1,7 @@
 package com.example.onboarding.controller;
 
-import com.example.onboarding.entity.User;
+import com.example.onboarding.entity.*;
+import com.example.onboarding.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
@@ -19,74 +20,57 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("api/course")
+@RequestMapping()
 public class OnboardingController {
+    private final CommandService commandService;
+    private final ProductService productService;
+    private final CourseService courseService;
+    private final PostService postService;
+    private final UserService userService;
 
+    @GetMapping("/staff")
+    public String staff(@RequestParam Long id, Model model) {
+        Command command = commandService.getCommandByID(id);
+        List<User> users = commandService.getAllUsers(id);
 
-//    @GetMapping("/index")
-//    public String getAdvertisement(Model model, Authentication authentication) {
-//        if (authentication != null) {
-//            User user = (User) authentication.getPrincipal();
-//            model.addAttribute("user", user);
-//        }
-//        List<Realty> realties = realtyService.getAll();
-//        List<User> users = new ArrayList<>();
-//        List<RealtyImage> realtyImages = new ArrayList<>();
-//        realties.forEach(realty -> {
-//            users.add(userService.get(realty.getUserId()));
-//            realtyImages.add(realtyService.getAllImages(realty.getId()).get(0));
-//        });
+        model.addAttribute("command", command);
+        model.addAttribute("user", users);
+
+        return "staff";
+    }
+
+    @GetMapping("/command")
+    public String commands(Model model) {
+        List<Command> commands = commandService.getAllCommand();
+        model.addAttribute("commands", commands);
+        return "command";
+    }
+    @GetMapping("/product")
+    public String products(Model model) {
+        List<Product> products = productService.getAll();
+        List<ProductImage> images = new ArrayList<>();
+        List<ProductImage> productImages = new ArrayList<>();
+
+        products.forEach(product ->
+            productImages.add(productService.getImages(product.getId()).get(0)) );
+        model.addAttribute("product", products);
+        return "product";
+    }
+    @GetMapping("/course")
+    public String courses(Model model) {
+        List<Course> courses = courseService.getAll();
+        List<CourseVideo> videos = new ArrayList<>();
+        List<CoursePresentation> presentations = new ArrayList<>();
+
+        courses.forEach(course -> {
+            videos.add(courseService.getAllVideos(course.getId()).get(0));
+            presentations.add(courseService.getAllPresentation(course.getId()).get(0));
+        });
+
 //        users.addAll(realties.stream().map(r -> userService.get(r.getUserId())).collect(Collectors.toList()));
-//        model.addAttribute("ads", realties);
-//        model.addAttribute("users", users);
-//        model.addAttribute("images", realtyImages);
-//        return "ads";
-//    }
-//
-//    @GetMapping("/advertisement")
-//    public String advertisementInfo(@RequestParam("id") Long id, Model model, Authentication authentication) {
-//        Realty realty = realtyService.getRealtyByID(id);
-//        User owner = userService.get(realty.getUserId());
-//        if (authentication != null) {
-//            User user = (User) authentication.getPrincipal();
-//            model.addAttribute("user", user);
-//        }
-//        List<RealtyImage> realtyImages = realtyService.getAllImages(id);
-//        model.addAttribute("advertisement", realty);
-//        model.addAttribute("images", realtyImages);
-//        model.addAttribute("owner", owner);
-//        return "advertisement_info";
-//    }
-//
-//    @GetMapping("/advertisement/new")
-//    public String newAdvertisement(@ModelAttribute("advertisement") Realty realty, Authentication authentication, Model model) {
-//        User user = (User) authentication.getPrincipal();
-//        model.addAttribute("user", user);
-//        return "add_advertisement";
-//    }
-//
-//    @PostMapping("/advertisement")
-//    public String createAdvertisement(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
-//                                      @RequestParam("file3") MultipartFile file3, @ModelAttribute("advertisement") Realty realty, Authentication authentication)
-//            throws IOException {
-//
-//        User user = (User) authentication.getPrincipal();
-//        realty.setUserId(user.getId());
-//        realtyService.saveRealty(realty, file1, file2, file3);
-//        return "redirect:/index";
-//    }
-//
-//    @GetMapping("/advertisement/delete")
-//    public String deleteAdvertisement(@RequestParam("id") Long id) {
-//        realtyService.deleteRealty(id);
-//        return "redirect:/index";
-//    }
-//
-//    @GetMapping("/advertisement/buy")
-//    public String buyAdvertisement(@RequestParam("id") Long id, Authentication authentication) {
-//        User user = (User) authentication.getPrincipal();
-//        userService.buyRealtyById(user, id);
-//        return "redirect:/index";
-//    }
-
+        model.addAttribute("videos", videos);
+        model.addAttribute("courses", courses);
+        model.addAttribute("presentations", presentations);
+        return "course";
+    }
 }

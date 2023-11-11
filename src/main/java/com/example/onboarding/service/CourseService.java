@@ -3,6 +3,7 @@ package com.example.onboarding.service;
 import com.example.onboarding.entity.Course;
 import com.example.onboarding.entity.CoursePresentation;
 import com.example.onboarding.entity.CourseVideo;
+import com.example.onboarding.entity.ProductImage;
 import com.example.onboarding.repository.CoursePresentationRepository;
 import com.example.onboarding.repository.CourseRepository;
 import com.example.onboarding.repository.CourseVideoRepository;
@@ -26,7 +27,7 @@ public class CourseService {
     }
 
     public List<CourseVideo> getAllVideos(Long id) {
-        return courseVideoRepository.getAllByCourseId(id);
+        return courseVideoRepository.getAllVideoByCourseId(id);
     }
 
     public Course saveVideoCourse(Course course, MultipartFile file) throws IOException {
@@ -40,9 +41,16 @@ public class CourseService {
         coursePresentationRepository.save(new CoursePresentation(0L, course.getId(), fileService.savePresentation("pptx" + course.getId() + "_1", file)));
         return course;
     }
+    public List<CoursePresentation> getAllPresentation(Long id) {
+        return coursePresentationRepository.getAllPresentationByCourseId(id);
+    }
 
-    public void deleteCourse(Long id) {
-        courseVideoRepository.deleteAll(courseVideoRepository.getAllByCourseId(id));
+    public void deleteVideoCourse(Long id) {
+        courseVideoRepository.deleteAll(courseVideoRepository.getAllVideoByCourseId(id));
+        courseRepository.deleteById(id);
+    }
+   public void deletePresentationCourse(Long id) {
+        coursePresentationRepository.deleteAll(coursePresentationRepository.getAllPresentationByCourseId(id));
         courseRepository.deleteById(id);
     }
 
