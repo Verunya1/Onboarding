@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:insert="~{/header.html}"></div>
+
+<div class="card-deck">
+    <ul th:each="ad, n : ${ads}">
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" th:src="${images[n.index].path}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${ad.price}"></h5>
+                <p class="card-text" th:text="${ad.type}"></p>
+                <p class="card-text" th:text="${users[n.index].username}"></p>
+                <!--            <img th:src="${images[n.index].path}" width="25%">-->
+                <a th:href="@{/advertisement(id=${ad.id})}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </ul>
+</div>
+</body>
+</html>
