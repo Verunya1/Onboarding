@@ -17,8 +17,11 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany
-    @JoinColumn
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="course_user",
+            joinColumns=  @JoinColumn(name="user_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="course_id", referencedColumnName="id") )
     private List <User> userId;
     private Long price;
     private String status;

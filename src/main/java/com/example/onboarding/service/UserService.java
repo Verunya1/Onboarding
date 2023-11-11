@@ -32,7 +32,9 @@ public class UserService {
     public User get(Long id) {
         return userRepository.findById(id).orElseThrow();
     }
-
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
+    }
     public List<User> getAll() {
         return userRepository.findAll();
     }
